@@ -12,11 +12,11 @@ public class Numerical {
         return num;
     }
 
-    public void andMask(int mask) {
-        num = num & mask;
+    public void andMask(int masking) {
+        num = num & masking;
     }
 
-    public void orMask(int mask) {
-        num = num | mask;
+    public void orMask(int masking) {
+        num = num | masking;
     }
 }

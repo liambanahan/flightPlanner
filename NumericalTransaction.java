@@ -10,14 +10,14 @@ public class NumericalTransaction implements Transaction {
     }
 
     public void doTransaction() {
-        //
+        num.setNum(num.getNum() + modifier);
     }
 
     public void undoTransaction() {
-        //
+        num.setNum(num.getNum() - modifier);
     }
 
     public String toString() {
-        return null;
+        return "Add " + this.modifier;
     }
 }
