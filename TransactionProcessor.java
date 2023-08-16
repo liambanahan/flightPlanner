@@ -48,4 +48,51 @@ public class TransactionProcessor {
         return (int)this.getSize() - this.mostRecentTransaction - 1;
     }
 
+    public void doTransaction() {
+        if (this.hasTransactionToRedo()) {
+            this.performingDo = true;
+            Transaction transaction = this.transactions.get(mostRecentTransaction);
+            transaction.doTransaction();
+            this.mostRecentTransaction++;
+            this.performingDo = false;
+        }
+    }
+
+    public void addTransaction(Transaction transaction) {
+        while(this.hasTransactionToRedo()) {
+            this.popTopTransaction();
+        } // this deletes old transactions for if we are branching
+        this.numTransactions++;
+        this.transactions.add(transaction);
+        this.doTransaction();
+    }
+
+    public void undoTransaction() {
+        if (this.hasTransactionToUndo()) {
+            this.performingDo = true;
+            Transaction transaction = this.transactions.get(mostRecentTransaction);
+            transaction.undoTransaction();
+            this.mostRecentTransaction--;
+            this.performingUndo = false;
+        }
+    }
+
+    public void clearAllTransactions() {
+        this.transactions.clear();
+        this.mostRecentTransaction = -1;
+    }
+
+    public String appendStack(String inp, ArrayList<Transaction> transactions) {
+        for (Transaction i : transactions) {
+            inp += i;
+        }
+        return inp;
+    }
+
+    @Override
+    public String toString() {
+        return "\nNumber of Transactions: " + this.numTransactions +
+        "\nCurrent Stack Index: " + this.mostRecentTransaction + 
+        "\nCurrent Transacton Stack:\n" + appendStack(null, transactions) + "\n\n";
+    }
 }
