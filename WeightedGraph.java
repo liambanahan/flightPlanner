@@ -114,4 +114,5 @@ public class WeightedGraph {
             } //if no closer node found, backtrack
         }
     }
+    // add bfs and maybe prims or dfs
 }
