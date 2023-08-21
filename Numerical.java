@@ -11,12 +11,4 @@ public class Numerical {
     public int getNum() {
         return num;
     }
-
-    public void andMask(int masking) {
-        num = num & masking;
-    }
-
-    public void orMask(int masking) {
-        num = num | masking;
-    }
 }
