@@ -1,4 +1,4 @@
-package flightPlanner;
+package flightPlanner.GraphDST;
 
 public class WeightedEdge {
     private String node1;

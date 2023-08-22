@@ -1,4 +1,4 @@
-package flightPlanner;
+package flightPlanner.TransactionProcessSys;
 
 public interface Transaction {
     public void doTransaction();

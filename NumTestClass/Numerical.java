@@ -1,4 +1,4 @@
-package flightPlanner;
+package flightPlanner.NumTestClass;
 
 //data type for testing TP
 public class Numerical {

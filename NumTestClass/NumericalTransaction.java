@@ -1,4 +1,6 @@
-package flightPlanner;
+package flightPlanner.NumTestClass;
+
+import flightPlanner.TransactionProcessSys.Transaction;
 
 public class NumericalTransaction implements Transaction {
     private Numerical num;

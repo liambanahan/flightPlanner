@@ -1,4 +1,4 @@
-package flightPlanner;
+package flightPlanner.GraphDST;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package flightPlanner;
+package flightPlanner.AirportTransaction;
 
 public class Airport {
     private String id;
