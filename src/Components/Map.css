@@ -1,0 +1,20 @@
+.Map {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
+  *{
+    box-sizing: border-box;
+    margin:15;
+    padding:15;
+  }
+  #root {
+    height:100vh;
+  
+  }
+  
+  .leaflet-container{
+    height: 80vh;
+  
+  }
+  
