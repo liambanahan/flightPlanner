@@ -24,8 +24,6 @@ const About = () => {
           sagittis aliquam malesuada.
         </p>
       </div>
-      <div className="about-chefs">
-      </div>
     </section>
   );
 };
