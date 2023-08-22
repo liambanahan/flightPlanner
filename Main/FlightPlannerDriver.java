@@ -4,7 +4,6 @@ package flightPlanner.Main;
 import flightPlanner.AirportTransaction.AirportTransaction;
 import flightPlanner.AirportTransaction.Airport;
 import flightPlanner.GraphDST.WeightedGraph;
-import flightPlanner.NumTestClass.NumericalTransaction;
 import flightPlanner.TransactionProcessSys.TransactionProcessor;
 
 //java libraries
@@ -12,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FlightPlannerDriver {
-    private TransactionProcessor tps = new TransactionProcessor();
-    private WeightedGraph airportGraph = new WeightedGraph();
-    private ArrayList<String> tripStops = new ArrayList<String>();
+    private static TransactionProcessor tps = new TransactionProcessor();
+    private static WeightedGraph airportGraph = new WeightedGraph();
+    private static ArrayList<String> tripStops = new ArrayList<String>();
 
-    public void displayAirports() {
+    public static void displayAirports() {
         System.out.println("\n\nAirports you can travel to and from:\n");
         ArrayList<String> codes = airportGraph.getKeys();
         String text = "";
@@ -35,7 +34,7 @@ public class FlightPlannerDriver {
         System.out.print("\n" + text); //print or printf??
     }
 
-    public void displayCurrentTrip() {
+    public static void displayCurrentTrip() {
         String text = "";
         text += "\nCurrent Trip Stops:\n";
         for (int i = 0; i < tripStops.size() - 1; i++) {
@@ -82,7 +81,7 @@ public class FlightPlannerDriver {
         System.out.print(text);
     }
     
-    public void displayMenu() {
+    public static void displayMenu() {
         String text = "\nEnter a Selection:\n";
         text += "S) Add a Stop to your Trip\n"
         + "U) Undo\n" 
@@ -92,7 +91,7 @@ public class FlightPlannerDriver {
         System.out.print(text);
     }
 
-    public boolean processUserInput() {
+    public static boolean processUserInput() {
         Scanner stdin = new Scanner(System.in);
         String inp = stdin.nextLine();
         String id;
@@ -142,5 +141,28 @@ public class FlightPlannerDriver {
             }  //consider changing to enchanced switch statement
         stdin.close();
         return false;
+    }
+
+    public static void initEdge(String node1, String node2) {
+        Airport a1 = (Airport)airportGraph.getNodeData(node1);
+        Airport a2 = (Airport)airportGraph.getNodeData(node2);
+        float distance = Airport.calculateDistance(a1, a2);
+        airportGraph.addEdge(node1, node2, distance);
+        airportGraph.addEdge(node2, node1, distance); //undirected edges
+    }
+
+    public static void initAllAirports() {
+        //read from JSON... to be implemented tm
+    }
+
+    public static void main(String[] args) {
+        initAllAirports();
+        boolean quit = false;
+        while (!quit) {
+            displayAirports();
+            displayCurrentTrip();
+            displayMenu();
+            quit = processUserInput();
+        }
     }
 }
