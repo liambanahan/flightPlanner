@@ -16,7 +16,7 @@ const Header = () => {
     <header className='site-header'>
       <nav className="container grid nav-bar">
         <Link className="nav-bar-logo" to={links.get('home').path}>
-          <img src={imageLogo} alt="Little Lemon logo" />
+          <img src={imageLogo} alt="Flight Planner logo" />
         </Link>
         <button 
           className="nav-bar-hamburger" 

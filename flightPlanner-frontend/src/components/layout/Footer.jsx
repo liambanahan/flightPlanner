@@ -11,7 +11,7 @@ import {
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import { Link } from "react-router-dom";
   import "./css/Footer.css";
-  import logoWhiteImage from "./assets/logo.png";
+  import logoFooterImage from "./assets/logo-footer.png";
   import links from "../../utils/links";
   
   const contacts = [
@@ -36,8 +36,8 @@ import {
         <div className="container grid">
           <img
             className="site-footer-logo"
-            src={logoWhiteImage}
-            alt="Little Lemon"
+            src={logoFooterImage}
+            alt="Flight Planner"
           />
           <nav className="site-footer-nav">
             <h4>Sitemap</h4>
