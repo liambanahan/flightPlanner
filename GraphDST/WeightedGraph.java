@@ -32,8 +32,8 @@ public class WeightedGraph {
         nodes.put(key, val);
     }
 
-    public Object getValue(String key) {
-        return nodes.get(key);
+    public Object getNodeData(String id) {
+        return nodes.get(id);
     }
 
     public void addEdge(String node1, String node2, double weight) {
