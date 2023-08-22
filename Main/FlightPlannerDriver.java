@@ -4,10 +4,12 @@ package flightPlanner.Main;
 import flightPlanner.AirportTransaction.AirportTransaction;
 import flightPlanner.AirportTransaction.Airport;
 import flightPlanner.GraphDST.WeightedGraph;
+import flightPlanner.NumTestClass.NumericalTransaction;
 import flightPlanner.TransactionProcessSys.TransactionProcessor;
 
 //java libraries
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FlightPlannerDriver {
     private TransactionProcessor tps = new TransactionProcessor();
@@ -35,7 +37,7 @@ public class FlightPlannerDriver {
 
     public void displayCurrentTrip() {
         String text = "";
-        text += "Current Trip Stops:\n";
+        text += "\nCurrent Trip Stops:\n";
         for (int i = 0; i < tripStops.size() - 1; i++) {
             text += "\t" + i + ". " + tripStops.get(i) + "\n";
         }
@@ -75,8 +77,70 @@ public class FlightPlannerDriver {
                 legNum += 1;
                 tripDistance += legDistance;
             }
-            text += "Total Trip Distance: " + tripDistance + "miles.\n\n";
-            System.out.print(text);
         }
+        text += "Total Trip Distance: " + tripDistance + "miles.\n\n";
+        System.out.print(text);
+    }
+    
+    public void displayMenu() {
+        String text = "\nEnter a Selection:\n";
+        text += "S) Add a Stop to your Trip\n"
+        + "U) Undo\n" 
+        + "R) Redo\n"
+        + "E) Empty Trip\n"
+        + "Q) Quit\n";
+        System.out.print(text);
+    }
+
+    public boolean processUserInput() {
+        Scanner stdin = new Scanner(System.in);
+        String inp = stdin.nextLine();
+        String id;
+        
+        switch (inp) {
+                case "S":
+                    System.out.println("\nEnter the Airport ID: ");
+                    id = stdin.nextLine();
+                    if (airportGraph.nodeExists(id)) {
+                        ArrayList<String> neighbors = new ArrayList<String>();
+                        airportGraph.getNeighbors(neighbors, id);
+                        if (tripStops.size() > 0) {//if not first trip
+                            String lastStop = tripStops.get(tripStops.size() - 1);
+                            if (lastStop == id) {
+                                System.out.println("Duplicate Stop Error - no Stop Added.\n");
+                            }
+                            else {
+                                AirportTransaction transaction = new AirportTransaction(id, tripStops);
+                                tps.addTransaction(transaction);
+                            }
+                        }
+                        else { //if first trip, no need to check for duplicate
+                            AirportTransaction transaction = new AirportTransaction(id, tripStops);
+                            tps.addTransaction(transaction);
+                        }
+                    }
+                    else {
+                        System.out.println("Invalid Airport Code Error - no Stop Added");
+                    }
+                    break;
+                case "U":
+                    tps.undoTransaction();
+                    break;
+                case "R":
+                    tps.doTransaction();
+                    break;
+                case "E":
+                    tps.clearAllTransactions();
+                    break;
+                case "Q":
+                    System.out.println("Goodbye!");
+                    stdin.close();// prevent resource leak
+                    return true;
+                default:
+                    System.out.println("Output not recognized. Please try again.\n");
+                    break;
+            }  //consider changing to enchanced switch statement
+        stdin.close();
+        return false;
     }
 }
