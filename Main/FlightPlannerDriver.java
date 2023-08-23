@@ -9,6 +9,14 @@ import flightPlanner.TransactionProcessSys.TransactionProcessor;
 //java libraries
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileReader;
+import java.io.IOException;
+
+//JSON parsing done through json-simple api
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+import org.json.simple.JSONArray;
 
 public class FlightPlannerDriver {
     private static TransactionProcessor tps = new TransactionProcessor();
@@ -99,7 +107,7 @@ public class FlightPlannerDriver {
         switch (inp) {
                 case "S":
                     System.out.println("\nEnter the Airport ID: ");
-                    id = stdin.nextLine();
+                    id = stdin.nextLine(); //
                     if (airportGraph.nodeExists(id)) {
                         ArrayList<String> neighbors = new ArrayList<String>();
                         airportGraph.getNeighbors(neighbors, id);
@@ -151,12 +159,41 @@ public class FlightPlannerDriver {
         airportGraph.addEdge(node2, node1, distance); //undirected edges
     }
 
-    public static void initAllAirports() {
-        //read from JSON... to be implemented tm
+    public static void initAllAirports() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        try {
+            String filePath = "C:\\Users\\lbana\\Documents\\Coding\\Java\\FlightPlannerProject\\flightPlanner\\Main\\Flights.JSON";
+            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
+            JSONArray airportsArray = (JSONArray) jsonObject.get("airports");
+            for (Object obj : airportsArray) {
+                JSONObject airportJson = (JSONObject) obj;
+                String code = (String) airportJson.get("code");
+                int latitudeDegrees = (int) airportJson.get("latitudeDegrees");
+                int latitudeMinutes = (int) airportJson.get("latitudeMinutes");
+                int longitudeDegrees = (int) airportJson.get("longitudeDegrees");
+                int longitudeMinutes = (int) airportJson.get("longitudeMinutes");
+
+                Airport airport = new Airport(code, latitudeDegrees, latitudeMinutes, longitudeDegrees, longitudeMinutes);
+                airportGraph.addNode("code", airport);
+            }
+
+            JSONArray edgesArray = (JSONArray) jsonObject.get("edges");
+            for (Object obj : edgesArray) {
+                JSONArray edgeJson = (JSONArray) obj;            
+                initEdge((String)edgeJson.get(0), (String)edgeJson.get(1));
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public static void main(String[] args) {
-        initAllAirports();
+        try {
+            initAllAirports();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
         boolean quit = false;
         while (!quit) {
             displayAirports();
