@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.io.FileReader;
 import java.io.IOException;
 
-//JSON parsing done through json-simple api
+//JSON parsing done through json-simple api download 
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -24,7 +24,7 @@ public class FlightPlannerDriver {
     private static ArrayList<String> tripStops = new ArrayList<String>();
 
     public static void displayAirports() {
-        System.out.println("\n\nAirports you can travel to and from:\n");
+        System.out.println("\n\nAirports you can travel to and from:");
         ArrayList<String> codes = airportGraph.getKeys();
         String text = "";
         for (int i = 0; i < codes.size(); i++) {
@@ -39,12 +39,12 @@ public class FlightPlannerDriver {
                 text += "\n";
             }  
         }
-        System.out.print("\n" + text); //print or printf??
+        System.out.print("\n" + text + "\n"); 
     }
 
     public static void displayCurrentTrip() {
         String text = "";
-        text += "\nCurrent Trip Stops:\n";
+        text += "Current Trip Stops:\n";
         for (int i = 0; i < tripStops.size() - 1; i++) {
             text += "\t" + i + ". " + tripStops.get(i) + "\n";
         }
@@ -85,7 +85,7 @@ public class FlightPlannerDriver {
                 tripDistance += legDistance;
             }
         }
-        text += "Total Trip Distance: " + tripDistance + "miles.\n\n";
+        text += "Total Trip Distance: " + tripDistance + " miles.\n";
         System.out.print(text);
     }
     
@@ -107,7 +107,8 @@ public class FlightPlannerDriver {
         switch (inp) {
                 case "S":
                     System.out.println("\nEnter the Airport ID: ");
-                    id = stdin.nextLine(); //
+                    id = stdin.next(); //
+                    System.out.println(" ");
                     if (airportGraph.nodeExists(id)) {
                         ArrayList<String> neighbors = new ArrayList<String>();
                         airportGraph.getNeighbors(neighbors, id);
@@ -147,7 +148,6 @@ public class FlightPlannerDriver {
                     System.out.println("Output not recognized. Please try again.\n");
                     break;
             }  //consider changing to enchanced switch statement
-        stdin.close();
         return false;
     }
 
@@ -168,18 +168,18 @@ public class FlightPlannerDriver {
             for (Object obj : airportsArray) {
                 JSONObject airportJson = (JSONObject) obj;
                 String code = (String) airportJson.get("code");
-                int latitudeDegrees = (int) airportJson.get("latitudeDegrees");
-                int latitudeMinutes = (int) airportJson.get("latitudeMinutes");
-                int longitudeDegrees = (int) airportJson.get("longitudeDegrees");
-                int longitudeMinutes = (int) airportJson.get("longitudeMinutes");
+                int latitudeDegrees = (int) (long) airportJson.get("latitudeDegrees");
+                int latitudeMinutes = (int) (long) airportJson.get("latitudeMinutes");
+                int longitudeDegrees = (int) (long) airportJson.get("longitudeDegrees");
+                int longitudeMinutes = (int) (long) airportJson.get("longitudeMinutes");
 
                 Airport airport = new Airport(code, latitudeDegrees, latitudeMinutes, longitudeDegrees, longitudeMinutes);
-                airportGraph.addNode("code", airport);
+                airportGraph.addNode(code, airport);
             }
 
             JSONArray edgesArray = (JSONArray) jsonObject.get("edges");
             for (Object obj : edgesArray) {
-                JSONArray edgeJson = (JSONArray) obj;            
+                JSONArray edgeJson = (JSONArray) obj;
                 initEdge((String)edgeJson.get(0), (String)edgeJson.get(1));
             }
         } catch (IOException | ParseException e) {

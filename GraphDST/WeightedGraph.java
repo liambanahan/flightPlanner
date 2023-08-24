@@ -43,8 +43,12 @@ public class WeightedGraph {
 
     //iterate thru hashmap using for-each loop
     public void getNeighbors(ArrayList<String> neighbors, String target) {
-        for (Map.Entry<String, Object> element : nodes.entrySet()) {
-            String id = element.getKey();
+        // storing all edge ids in a set
+        Set<String> keySet = edges.keySet();
+        // passing to arraylist for processing
+        ArrayList<String> keyList = new ArrayList<String>(keySet);
+        //iterate through the ids, parse, look for neighbors
+        for (String id : keyList) {
             int dash = id.indexOf("-");
             String node1 = id.substring(0, dash);
             if (node1.compareTo(target) == 0) { //if first elem of id is target
@@ -52,6 +56,7 @@ public class WeightedGraph {
                 neighbors.add(neighbor);
             }
         }
+        
     }
 
     public boolean areNeighbors(String node1, String node2) {
